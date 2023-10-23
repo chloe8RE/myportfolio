@@ -20,20 +20,20 @@ ___________________________________
 [Demand Forecasting](https://en.wikipedia.org/wiki/Demand_forecasting) refers to the process of making sales estimation about customer demand for a specific product and services over a certain time period.  It is crucial process in business environment as it provides both quantitative and qualitative insights of the product positioning in the target market so as to faciliate companies to make informed decisions on business growth, strategies, pricing and marketing initiatives. Failing of which leads to detrimental impact on customer satisfaction, business competitiveness, profitability and longevity. 
 
 Importance
-1. Resources optimization: If the company is able to identify expected demand levels for its product or services, it allows them to make necessary preparations.
-2. Efficient inventory management: Accurate demand forecasting help companies kept stocks at right balance.  Insufficient stocks resulted in customer dissatisfaction and revenue loss, and may lead to loss of future businesses.  On the other hand, overstocking incurs additional storage and logistics costs and would lead to stock obsolescence.
-3. Operational efficiency : Efficient production planning also reduces waste and lowers production costs, contributing to higher margins.
-4. SME business: Demand forecasting is particularly crucial for small- and medium-sized enterprises (SMEs).  Flawed demand planning may cost the loss of opportunity to fill big orders.  Excessively ambitious forecasts, on the other hand, leads to scaling too rapidly for demand that could not materialize as expected. 
-5. Customer satisfaction: Demand forecasting enables businesses to meet customer demand consistently and timely.
+1. Resources optimization
+2. Efficient inventory management
+3. Operational efficiency
+4. SME business
+5. Customer satisfaction
 
 Challenges
-1. Data collection: historical data not easily available or can be time consuming to 
-2. Human errors and bias: personal judgement and stakeholders conflicting interests
-3. Data quality: formats and details required are not easily available.  Some require lots of cleaning. 
+1. Data collection
+2. Human errors and bias
+3. Data quality
 4. **Seasonality**: demand and customer perference changes rapidly
 5. **Complexity**: external factors affecting demand and it can be hard to collect and model.
-6. Lack expertise: data analysis, statistics and domain knowlegde, as well as technology capability
-8. Supply chain: global sourcing and interdependency.  
+6. Lack expertise
+8. Supply chain
 
 ### Problem Statement
 
@@ -42,26 +42,11 @@ I would like to explore machine learning algorithms to develop an effective **sh
 ## Methodology
 
 ### Sources
-
-**Data sources**<br>
 Online business sales order quantity: https://www.kaggle.com/datasets/earthfromtop/amazon-sales-fy202021
-
-**Information sources**
-
-1. https://en.wikipedia.org/wiki/Demand_forecasting
-2. https://medium.com/@futureanalytica/importance-of-demand-forecasting-86c1a4753dc0
-3. https://www.netsuite.com/portal/resource/articles/inventory-management/demand-forecasting.shtml
-4. https://www.thefulfillmentlab.com/blog/demand-forecasting
-5. https://www.unitedstateszipcodes.org/
-6. https://www.machinelearningplus.com/time-series/time-series-analysis-python/
-7. https://machinelearningmastery.com/random-forest-for-time-series-forecasting/
-8. https://machinelearningmastery.com/time-series-forecasting-with-prophet-in-python/
-
 
 ### Workflow
 
 Below is capstone workflow:
-
 ![workflow.png](attachment:c2ad9374-58d8-4360-b589-b98f4f32ebb0.png)
 
 ### Models
@@ -74,10 +59,19 @@ The data models used can be split into 2 main categories: Time Series Forecastin
    - ARIMAX and SARIMAX are the extension of traditional ARIMA and SARIMA respecitively. These extended models include both past values of target responses and additional features to make prediction of future values.  It accounts for features that are exogenous which means external factors that might be potential demand driver. This enables incorporating external factors to establish relationships between the factors and demand, so that I could utilize the features available in the datasets in modelling.<br>
 <br>
 * **Regression**
-   - Random Forest is an ensemble decision tree model that is used for classification and regression predictive modelling.
-   - it can capture complex relationships in dataset and they are robust for short-term forecasts. 
-   - It adopts random input variable selection to create decision trees hence prediction errors from each tree is more different and less correlated. The final prediction is drawn by averaged across all decision trees and I believe this would result in better performance than other bagged decision tree models.
-   - While Random Forest model is quite immune to statistical assumption that observations are independent of each other, it tend to not fit very well for increasing and decreasing trends and seasonality which usually encountered with time series analysis. 
+    1. Random Forest <br>
+   - It is an ensemble decision tree model used for regression predictive modelling.
+   - It can capture complex (non linear) relationships between sales demand and features.
+   - Random Forest model is robust to outliers (demand surge) in dataset hence useful for short-term forecasts.
+   - Feature importance provide insights to main driver of dependant variables (sales demand)
+   - It selects input variable randomly to create decision trees hence prediction errors from each tree is more different and less correlated.
+   - The final prediction is drawn by averaged across all decision trees and I believe this would result in better performance than other bagged decision tree models.<br>
+   <br>
+    2. XGBoost <br>
+   - It also can capture complex relationships in datasets through Extreme Gradient Boosting, leading to high accuracy sales prediction
+   - Optimized for efficiency which is important for real-time sales prediction
+   - In-built regularization techniques L1 L2 to prevent overfitting which in turn improve reliability of forecasts.
+   - Feature selection allow identification of relevant features which has the most impact on sales demand hence improve interpretability
 
 ### Metrics
 
@@ -96,20 +90,17 @@ For optimisation and selection of models, RMSE is used due to the reasons as fol
 1. This dataset covers only 12 months from Oct-2020 to Sep-2021.
 2. Age of customer on average 46 years old which is aligned with the mean 47 y/o. The demographics of customers for this business are made up of matured adults with high purchasing power, likely focus on quality over quantity, which explains the high value pricing of product sold. 
 3. There are 13 types of order status hence I need to deep dive to check which constitute to completed sales.
-4. There are 47,932 types of SKU indicating massive products database commonly seen in company that have grown over a period of time. SKU (Stock Keeping Unit) refers to unique identifier assigned to a product for inventory management and tracking. Management by SKU is essential as it helps with store layouts, multi-channel listings, invoicing and orders tracking.
-5. This business manages 15 categories with Mobiles and Tablets being their top seller. Each product category has its unique demand seasonality, purchasing patterns (buy in bulk or small quantity), sourcing requirement and customer clusters. Hence it is better to start small with forecasting one product category. 
-6. The availability of various payment methods provide convenience and options to customer, hence has a impact on driving sales demand.
-7. The business has large customer base of 64,000 as indicated under "Full Name". Successful customer relationship management enables cross-selling and up-selling, which can be faciliated by machine learning Recommender System whereby customer ratings can provide informative feedback. This is part of future work.
-8. this business can leverage on zipcodes details to deepdive location analysis study to drive targeted promotions and product development. 
+4. This business manages 15 categories with Mobiles and Tablets being their top seller. Each product category has its unique demand seasonality, purchasing patterns (buy in bulk or small quantity), sourcing requirement and customer clusters. Hence it is better to start small with forecasting one product category. 
+5. The availability of various payment methods provide convenience and options to customer, hence has a impact on driving sales demand.
+6. The business has large customer base of 64,000 as indicated under "Full Name". Successful customer relationship management enables cross-selling and up-selling, which can be faciliated by machine learning Recommender System whereby customer ratings can provide informative feedback. This is part of future work.
+7. this business can leverage on zipcodes details to deepdive location analysis study to drive targeted promotions and product development.
+8. Per observation, majority of the online orders are "canceled", "complete" or "received". For future works, if we are able to extract customer reasons for "cancellation" then we could perform NLP Sentiment Analysis because the loss of business is significant.
 
 ### Product Category
 
 1. Mobiles & Tablets leads the sales chart in term of order quantity for all order statuses and completed sales orders. It made up of 46,046 order quantity out of 250,887 total completed orders which constitutes to 18%.
 2. Men's Fashion ranks second place, takes up 14% of total completed orders. Appliances made up of 13% of total completed orders.
 3. These top 3 product categories, in aggregate, made up of 45% of total completed orders, which is almost half the order quantity. Hence this warrant attention and efforts in demand planning by focusing at top 3 categories.
-4. There is positive correlation between order quantity and year suggesting growth in total order quantity which is a good sign albeit a weak positive.
-5. Price and order quantity has weak inverse correlation. This provide some insight into Price Elasticity of Demand for products offered.
-6. A detailed price sensitivity study on each SKU is required to get good understanding of price impact on demand.
 
 ### Trends
 
@@ -118,6 +109,9 @@ For optimisation and selection of models, RMSE is used due to the reasons as fol
 3. Low demand (almost flatline) are seen in 2020-10 and from mid 2021-06 till the end 2021-09, probably is common for this particular online reseller to experience such cyclical business pattern.
 4. The top 3 categories (Mobiles & Tablets, Men's Fashion, and Appliances) follows similar trends as the overall trends, particularly the peak in Dec-2020.
 5. All of the top 5 categories exhibits similar flat demand from mid June-2021 onwards.
+6. There is positive correlation between order quantity and year suggesting growth in total order quantity which is a good sign albeit a weak positive.
+7. Price and order quantity has weak inverse correlation. This provide some insight into Price Elasticity of Demand for products offered.
+8. A detailed price sensitivity study on each SKU is required to get good understanding of price impact on demand.
 
 ### Seasonality
 
@@ -136,9 +130,10 @@ For optimisation and selection of models, RMSE is used due to the reasons as fol
 3. Per observation on linegraph above, SARIMAX model is able to predict the uptrend within these short intervals. The spikes in demand lies in the quarter Oct-2020 to Dec-2020 with max order quantity of 4,261 units hence RMSE 196 is 4.6% relative forecasting errors to max order quantity.
 4. Short term forecasting face more challenges than longer term forecasting because it is sensitive to recent fluctuations and unforeseen events. Therefore the RMSE derived from SARIMAX model is considered acceptable for short-term forecasting with expected variablity.
 5. Short term foreacasting is also useful for highly competitive and fast-paced ecommerce industry, to be adopted in conjuction with long term forecasting as immediate changes can be made to the models to get quick and relatively accutate results.
-6. Random Forecast model enables hyperparameter tuning to ensure no overfitting and underfitting issues.
-7. Hyperparameters can be adjusted according to the forecasted periods (60 days, 90 days or any other) to achive optimal results for each specific period.
-8. Random forest model shows that shorter periods yield better model performance with better generalization of data. It also faciliate feature importance study to allow organization to identify driver for order quantity in a specific periods.
+6. Random Forest and XGBoost models showed y_predicted and y_true lines tracked closely, indicating model is able to predict seasonality well with no overfitting issue. The RMSE is lower than time series SARIMAX model.
+7. Hyperparameter tuning in Random Forest Regressor enables fine-tuning for best results to ensure there are good fit model that generalize well to new data. Hyperparameter tuning is powerful as by setting the right parameters, the results can improved tremendously.
+8. Feature importance in Random Forest modeling shed lights on the important feature that drive demand. Payment method 'easypay voucher' appeared to be the strongest feature, followed by discount amount and age.  Week of day 'Sunday' and 3rd week of the month are also one of the top 5 important features. Feature importance helps isolate noisy features 'full_name' and 'gender'.  The model results improved once these two features are removed from modelling.
+9. XGBoost utilised gradient boosting ensemble algorithm to predict sales demand through through combining decision trees (which individually are weak learners) to form a combined strong learner.
 
 **Best Model** Random Forest Regression model shows the better fit and yields the lowest RMSE on test data hence it is our best model. Incorporating exogenous factors into modelling help contributed to lower RMSE. And Random Forest Regressor handle complexity better and generalize to new data better than time series models.
 
@@ -163,4 +158,4 @@ Feature engineering to create interactive terms between features or variables to
 
 We could gather more information on products attributes such as color, brand and size. Other information that would help with accurate demand forecasting are promotions program, other co-purchased products (market basket analysis), holiday seasons, special events (Formula 1 race, Olympics Game etc), weather data as well as external economic indicators (GDP, unemployment rate, interest rate)
 
-We could train the datasets on other advanced models such as XGBoost or Prophet models and continue to finetune the models until optimum results.
+We could train the datasets on other advanced models such as Prophet models and continue to finetune the models until optimum results.
